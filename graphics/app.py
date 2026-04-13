@@ -6,6 +6,7 @@ import pygame
 from graphics.constants import SCREEN_W, SCREEN_H, FPS, TITLE
 from graphics import fonts
 from graphics.screens.base import Screen
+from graphics.screens.menu import MainMenuScreen
 
 # In a browser (pygbag/emscripten) fullscreen isn't available.
 _IS_WEB = sys.platform == "emscripten"
@@ -23,7 +24,6 @@ class App:
         self._clock = pygame.time.Clock()
         fonts.init()
         print("=== fonts init done ===")
-        from graphics.screens.menu import MainMenuScreen
         self._screen: Screen = MainMenuScreen(self)
         print("=== MainMenuScreen created ===")
 
