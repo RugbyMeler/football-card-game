@@ -13,16 +13,20 @@ _IS_WEB = sys.platform == "emscripten"
 
 class App:
     def __init__(self):
+        print(f"=== App.__init__ _IS_WEB={_IS_WEB} ===")
         pygame.init()
+        print("=== pygame.init done ===")
         pygame.display.set_caption(TITLE)
-        # pygame.SCALED can cause blank canvas in some browsers; use no flags on web
         flags = 0 if _IS_WEB else (pygame.FULLSCREEN | pygame.SCALED)
         self._surf = pygame.display.set_mode((SCREEN_W, SCREEN_H), flags)
+        print("=== display set ===")
         self._clock = pygame.time.Clock()
         fonts.init()
-
+        print("=== fonts init done ===")
         from graphics.screens.menu import MainMenuScreen
         self._screen: Screen = MainMenuScreen(self)
+        print("=== MainMenuScreen created ===")
+
 
     async def run(self) -> None:
         running = True

@@ -4,13 +4,20 @@ Run with:   python main.py          (graphical, default)
             python main.py --text   (original text mode)
             python -m pygbag .      (build for web)
 """
+print("=== main.py loading ===")
 import sys
 import asyncio
+print("=== imports done ===")
 
 
 async def main_graphical() -> None:
+    print("=== importing App ===")
     from graphics.app import App
-    await App().run()
+    print("=== creating App ===")
+    app = App()
+    print("=== App created, entering run loop ===")
+    await app.run()
+    print("=== App.run() returned ===")
 
 
 def main_text() -> None:
@@ -49,14 +56,14 @@ def main_text() -> None:
 
 
 async def main() -> None:
+    print("=== main() called ===")
     try:
-        if "--text" in sys.argv:
-            main_text()
-        else:
-            await main_graphical()
-    except Exception:
+        await main_graphical()
+    except Exception as e:
         import traceback
-        traceback.print_exc()  # prints to browser console in pygbag
+        print(f"=== CRASH: {e} ===")
+        traceback.print_exc()
 
 
+print("=== calling asyncio.run ===")
 asyncio.run(main())
