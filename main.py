@@ -2,13 +2,15 @@
 
 Run with:   python main.py          (graphical, default)
             python main.py --text   (original text mode)
+            python -m pygbag .      (build for web)
 """
 import sys
+import asyncio
 
 
-def main_graphical() -> None:
+async def main_graphical() -> None:
     from graphics.app import App
-    App().run()
+    await App().run()
 
 
 def main_text() -> None:
@@ -46,8 +48,11 @@ def main_text() -> None:
             break
 
 
-if __name__ == "__main__":
+async def main() -> None:
     if "--text" in sys.argv:
         main_text()
     else:
-        main_graphical()
+        await main_graphical()
+
+
+asyncio.run(main())

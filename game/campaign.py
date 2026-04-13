@@ -53,20 +53,29 @@ def save_campaign(player_name: str, deck_ids: list[str], opponent_index: int,
     }
     if squad is not None:
         data["squad"] = squad.to_dict()
-    with open(SAVE_FILE, "w") as f:
-        json.dump(data, f, indent=2)
+    try:
+        with open(SAVE_FILE, "w") as f:
+            json.dump(data, f, indent=2)
+    except OSError:
+        pass  # no writable filesystem in web build — saves are silently skipped
 
 
 def load_campaign() -> dict | None:
-    if not SAVE_FILE.exists():
+    try:
+        if not SAVE_FILE.exists():
+            return None
+        with open(SAVE_FILE) as f:
+            return json.load(f)
+    except OSError:
         return None
-    with open(SAVE_FILE) as f:
-        return json.load(f)
 
 
 def delete_save() -> None:
-    if SAVE_FILE.exists():
-        SAVE_FILE.unlink()
+    try:
+        if SAVE_FILE.exists():
+            SAVE_FILE.unlink()
+    except OSError:
+        pass
 
 
 # ── Campaign ──────────────────────────────────────────────────────────────────
