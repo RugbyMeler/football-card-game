@@ -15,7 +15,11 @@ _IS_WEB = sys.platform == "emscripten"
 class App:
     def __init__(self):
         print(f"=== App.__init__ _IS_WEB={_IS_WEB} ===")
+        # Disable audio before init — we don't use sound, and pygame.mixer
+        # triggers browser autoplay policy in WASM which blocks execution.
+        pygame.mixer.pre_init(0, 0, 0, 0)
         pygame.init()
+        pygame.mixer.quit()  # ensure mixer is fully off
         print("=== pygame.init done ===")
         pygame.display.set_caption(TITLE)
         flags = 0 if _IS_WEB else (pygame.FULLSCREEN | pygame.SCALED)
