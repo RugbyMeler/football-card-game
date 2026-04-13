@@ -49,10 +49,14 @@ def main_text() -> None:
 
 
 async def main() -> None:
-    if "--text" in sys.argv:
-        main_text()
-    else:
-        await main_graphical()
+    try:
+        if "--text" in sys.argv:
+            main_text()
+        else:
+            await main_graphical()
+    except Exception:
+        import traceback
+        traceback.print_exc()  # prints to browser console in pygbag
 
 
 asyncio.run(main())

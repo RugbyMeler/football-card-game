@@ -15,7 +15,8 @@ class App:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(TITLE)
-        flags = pygame.SCALED if _IS_WEB else (pygame.FULLSCREEN | pygame.SCALED)
+        # pygame.SCALED can cause blank canvas in some browsers; use no flags on web
+        flags = 0 if _IS_WEB else (pygame.FULLSCREEN | pygame.SCALED)
         self._surf = pygame.display.set_mode((SCREEN_W, SCREEN_H), flags)
         self._clock = pygame.time.Clock()
         fonts.init()
